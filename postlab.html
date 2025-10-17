@@ -1,0 +1,67 @@
+import React, { useState } from "react";
+
+function AttendanceTracker() {
+  // Step 1: List of students
+  const students = ["Arun", "Balaji", "Chitra", "Divya", "Kiran"];
+
+  // Step 2: State variables
+  const [presentCount, setPresentCount] = useState(0);
+  const [attendance, setAttendance] = useState(
+    students.reduce((acc, name) => ({ ...acc, [name]: false }), {})
+  );
+
+  // Step 3: Handle checkbox change
+  const handleCheckboxChange = (name) => {
+    const newStatus = !attendance[name];
+    setAttendance({ ...attendance, [name]: newStatus });
+    setPresentCount((prevCount) => (newStatus ? prevCount + 1 : prevCount - 1));
+  };
+
+  // Step 4: Optional reset button
+  const handleReset = () => {
+    setAttendance(students.reduce((acc, name) => ({ ...acc, [name]: false }), {}));
+    setPresentCount(0);
+  };
+
+  // Step 5: Render UI
+  return (
+    <div style={{ padding: "20px", fontFamily: "Arial", maxWidth: "300px" }}>
+      <h2>Attendance Tracker</h2>
+
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        {students.map((name) => (
+          <li key={name} style={{ margin: "5px 0" }}>
+            <label>
+              <input
+                type="checkbox"
+                checked={attendance[name]}
+                onChange={() => handleCheckboxChange(name)}
+              />{" "}
+              {name}
+            </label>
+          </li>
+        ))}
+      </ul>
+
+      <h3 style={{ color: "green" }}>Total Present: {presentCount}</h3>
+
+      <button
+        onClick={handleReset}
+        style={{
+          marginTop: "10px",
+          padding: "6px 12px",
+          backgroundColor: "#007BFF",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        Reset Attendance
+      </button>
+    </div>
+  );
+}
+
+export default AttendanceTracker;
+
